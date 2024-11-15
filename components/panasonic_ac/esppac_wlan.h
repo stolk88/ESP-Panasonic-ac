@@ -8,11 +8,12 @@ namespace WLAN {
 
 static const uint8_t HEADER = 0x5A;  // The header of the protocol, every packet starts with this
 
+// Geüpdatete time-outs voor stabiliteit
 static const int INIT_TIMEOUT = 10000;       // Time to wait before initializing after boot
-static const int INIT_END_TIMEOUT = 20000;   // Time to wait for last handshake packet
-static const int FIRST_POLL_TIMEOUT = 650;   // Time to wait before requesting the first poll
+static const int INIT_END_TIMEOUT = 30000;   // Time to wait for last handshake packet
+static const int FIRST_POLL_TIMEOUT = 1000;  // Time to wait before requesting the first poll
 static const int POLL_INTERVAL = 30000;      // The interval at which to poll the AC
-static const int RESPONSE_TIMEOUT = 600;     // The timeout after which we expect a response to our last command
+static const int RESPONSE_TIMEOUT = 2000;    // Verhoogd om meer tijd te geven voor reacties
 static const int INIT_FAIL_TIMEOUT = 60000;  // The timeout after which the initialization is considered failed
 
 enum class ACState {
@@ -72,6 +73,12 @@ class PanasonicACWLAN : public PanasonicAC {
   void handle_resend();
 
   void set_value(uint8_t key, uint8_t value);
+
+  // Toevoegen van vertraging tussen commando's
+  void delay_between_commands() {
+    delay(500);  // Verhoogde vertraging tussen commando's
+  }
+
 };
 
 }  // namespace WLAN
